@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parser.add_argument("--skip_begin_layers", type = int, default = 0, help = "The number (or fraction) of initial layers to skip.")
     parser.add_argument("--skip_end_layers", type = int, default = 1, help = "The number (or fraction) of end layers to skip.")
     parser.add_argument("--discriminant_ratio_tolerance", type = float, default = 0.25, help = "Used to filter low signal \"noise\" directions.")
-    parser.add_argument("--regularisation_factor", type = float, default = 1.0, help = "Regularisation using \"One Standard Deviation Rule\".")
+    parser.add_argument("--regularisation_factor", type = float, default = 1.0, help = "Regularisation via \"soft thresholding\" mean shrinkage.")
     args = parser.parse_args()
     main(
         args.model_id,

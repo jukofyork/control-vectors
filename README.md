@@ -40,7 +40,7 @@ The main script can be executed from the command line with various parameters to
 ### Command Line Arguments
 
 - `--model_id`: The model ID or path to load the pretrained model.
-- `--output_path`: The path to save the modified models or control vectors.
+- `--output_path`: The path to save the control vectors.
 - `--system_prompt_file`: The file path for system prompts.
 - `--prompt_file`: The file path for user prompts.
 - `--num_prompt_samples`: The number of prompts to sample (default: 1000).
@@ -62,15 +62,18 @@ Replace `<model_path>`, `<output_directory>`, `<system_prompts.json>`, and `<pro
 
 ### Output
 
-The script will generate modified models or control vectors based on the directions analyzed. These are saved to the specified output path.
+The script will generate control vectors based on the directions analyzed. These are saved to the specified output path.
 
-## Example
+## Examples
 
 ```bash
-python create_control_vectors.py --model_id "gpt2" --output_path "./modified_models" --system_prompt_file "system_prompts.json" --prompt_file "user_prompts.txt" --num_prompt_samples 500
+python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path language_ --system_prompt_file data/system_messages_language.json --prompt_file data/prompts.txt
+python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path storytelling_ --system_prompt_file data/system_messages_storytelling.json --prompt_file data/prompts.txt
+python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path character_focus_ --system_prompt_file data/system_messages_character_focus.json --prompt_file data/prompts.txt
+python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path outlook_ --system_prompt_file data/system_messages_outlook.json --prompt_file data/prompts.txt
 ```
 
-This command modifies the GPT-2 model based on the provided prompts and saves the results in the `./modified_models` directory.
+These commands will generate all 4 sets of control vectors for the `Mistral-Large-Instruct-2407` model using the provided prompts and then save the results in the current directory.
 
 ## Contributing
 
