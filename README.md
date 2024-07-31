@@ -2,11 +2,13 @@
 
 This repository contains a Python program designed to create control vectors for use with [llama.cpp](https://github.com/ggerganov/llama.cpp) via analysis of hidden state activations.
 
+See [creative-writing-control-vectors-v2.1](https://huggingface.co/jukofyork/creative-writing-control-vectors-v2.1) for the pre-generated control vectors.
+
 ## Credits
 
 - The code in `HiddenStateDataManager` and `ModelHandler` based off Sumandora's [Removing refusals with HF Transformers](https://github.com/Sumandora/remove-refusals-with-transformers).
 - The code in `ModelHandler` to save `gguf` control vectors based off Theia Vogel's [repeng](https://github.com/vgel/repeng).
-- Much of the original code in `DirectionAnalyzer` was insipred by FailSpy's [abliterator](https://github.com/FailSpy/abliterator).
+- Much of the original code in `DirectionAnalyzer` was inspired by FailSpy's [abliterator](https://github.com/FailSpy/abliterator).
 - The majority of the prompts in `prompts.txt` came from [Sao10K](https://huggingface.co/Sao10K)'s [Short-Storygen-v2](https://huggingface.co/datasets/nothingiisreal/Short-Storygen-v2) dataset.
 
 ## Overview
@@ -29,13 +31,13 @@ The program operates in several steps:
 
 Before running the script, ensure all required libraries are installed:
 
-```bash
+```sh
 pip install torch transformers tqdm gguf
 ```
 
 **NOTE**: For very recent models, you may need to install transformers from source:
 
-```bash
+```sh
 pip install git+https://github.com/huggingface/transformers.git
 ```
 
@@ -60,7 +62,7 @@ The main script can be executed from the command line with various parameters to
 
 To run the script, use the following command:
 
-```bash
+```sh
 python create_control_vectors.py --model_id <model_path> --output_path <output_directory> --system_prompt_file <system_prompts.json> --prompt_file <prompts.txt>
 ```
 
@@ -72,7 +74,7 @@ The script will generate control vectors based on the directions analyzed. These
 
 ## Examples
 
-```bash
+```sh
 python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path language_ --system_prompt_file data/system_messages_language.json --prompt_file data/prompts.txt
 python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path storytelling_ --system_prompt_file data/system_messages_storytelling.json --prompt_file data/prompts.txt
 python create_control_vectors.py --model_id ./Mistral-Large-Instruct-2407 --output_path character_focus_ --system_prompt_file data/system_messages_character_focus.json --prompt_file data/prompts.txt
@@ -89,7 +91,7 @@ These commands will generate all 4 sets of control vectors for the `Mistral-Larg
 
 Use the `'--control-vector'` option as follows:
 
-```bash
+```sh
 llama-cli --model <model>.gguf [other CLI arguments] \
     --control-vector <model>-storytelling__descriptive.gguf \
     --control-vector <model>-character_focus__dialogue.gguf \
@@ -98,7 +100,7 @@ llama-cli --model <model>.gguf [other CLI arguments] \
 
 For server mode:
 
-```bash
+```sh
 llama-server --model <model>.gguf [other CLI arguments] \
     --control-vector <model>-storytelling__descriptive.gguf \
     --control-vector <model>-character_focus__dialogue.gguf \
@@ -109,18 +111,18 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 If you want finer control, use the `'--control-vector-scaled'` option like this:
 
-```bash
+```sh
 llama-cli --model <model>.gguf [other CLI arguments] \
-    --control-vector-scaled <model>-setting__expansive.gguf 0.25 \
-    --control-vector-scaled <model>-society__chaotic.gguf 1.5
+    --control-vector-scaled <model>-language__ornate.gguf 0.25 \
+    --control-vector-scaled <model>-character_focus__narration.gguf 1.5
 ```
 
 For server mode:
 
-```bash
+```sh
 llama-server --model <model>.gguf [other CLI arguments] \
-    --control-vector-scaled <model>-setting__expansive.gguf 0.25 \
-    --control-vector-scaled <model>-society__chaotic.gguf 1.5
+    --control-vector-scaled <model>-language__ornate.gguf 0.25 \
+    --control-vector-scaled <model>-character_focus__narration.gguf 1.5
 ```
 
 ## Important Notes
@@ -135,7 +137,7 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 ## Algorithm Details
 
-### 1. First we define 5 creative-writing "axis" (click to expand):
+### 1. First we define 4 creative-writing "axis" (click to expand):
 
 <details> <summary>"Storytelling" ('explicit' <---> 'descriptive')</summary>
   
@@ -227,102 +229,56 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 </details>
 
-<details> <summary>"Setting ('localised' <---> 'expansive')"</summary>
-  
-```json
-{
-  "baseline": [
-    "You are an author.",
-    "You are a storyteller.",
-    "You are an AI author.",
-    "You are an artificial intelligence that creates stories.",
-    "You are an AI-powered author.",
-    "Picture yourself as a famous author.",
-    "You are an AI creator of tales.",
-    "Imagine you are an expert storyteller.",
-    "You are a fiction writer.",
-    "You are an author specializing in fictional stories."
-  ],
-  "localised": [
-    "You are an author who crafts intimate stories set in small, tightly-knit communities or limited locations, focusing on personal relationships and local dynamics.",
-    "You are a storyteller who excels at creating narratives centered around a single household, small town, or confined space, exploring the intricacies of close-knit relationships.",
-    "You are an AI author specializing in stories with a narrow geographic focus, delving deep into the lives of a small cast of characters in a specific, limited setting.",
-    "You are an artificial intelligence that creates stories set in microcosms, such as a single building or neighborhood, examining how confined spaces shape character interactions.",
-    "You are an AI-powered author who develops tales set in isolated environments, like remote islands or secluded valleys, exploring how limited resources and close proximity affect relationships.",
-    "Picture yourself as a famous author known for crafting stories set in small, self-contained worlds, such as boarding schools or remote research stations.",
-    "You are an AI creator of tales that focus on the intricate social dynamics of small groups, like families or close-knit friend circles, in confined settings.",
-    "Imagine you are an expert storyteller who specializes in narratives set in single locations, like a house or a small village, exploring how limited space influences character development.",
-    "You are a fiction writer who excels at creating stories with a tight focus on a small cast of characters in a specific, bounded environment, such as a submarine or space station.",
-    "You are an author specializing in fictional stories that examine the complexities of small, interconnected communities, where everyone knows each other and secrets are hard to keep."
-  ],
-  "expansive": [
-    "You are an author who creates vast, intricate fictional universes with complex geographies, diverse cultures, and rich histories spanning continents or planets.",
-    "You are a storyteller who weaves epic tales set in expansive worlds, complete with detailed maps, multiple languages, and intricate political systems.",
-    "You are an AI author specializing in crafting immersive, large-scale settings with diverse ecosystems, unique magical or technological systems, and interconnected storylines.",
-    "You are an artificial intelligence that creates stories set in sprawling, multi-layered worlds with complex social hierarchies, diverse species, and far-reaching conflicts.",
-    "You are an AI-powered author who develops tales set in expansive universes with multiple inhabited planets or realms, each with its own distinct cultures and challenges.",
-    "Picture yourself as a famous author renowned for building elaborate fantasy or sci-fi worlds with detailed histories, complex religions, and intricate economic systems.",
-    "You are an AI creator of tales set in vast, interconnected worlds where actions in one region have far-reaching consequences across continents or galaxies.",
-    "Imagine you are an expert storyteller who crafts narratives in expansive settings with multiple factions, races, or civilizations, each with unique motivations and conflicts.",
-    "You are a fiction writer who excels at creating stories set in richly detailed worlds with diverse climates, unique flora and fauna, and complex geopolitical landscapes.",
-    "You are an author specializing in fictional stories that unfold across massive, intricately designed worlds with multiple timelines, parallel dimensions, or alternate realities."
-  ]
-}
-
-```
-
-</details>
-
-<details> <summary>"Society ('lawful' <---> 'chaotic')"</summary>
-  
-```json
-{
-  "baseline": [
-    "You are an author.",
-    "You are a storyteller.",
-    "You are an AI author.",
-    "You are an artificial intelligence that creates stories.",
-    "You are an AI-powered author.",
-    "Picture yourself as a famous author.",
-    "You are an AI creator of tales.",
-    "Imagine you are an expert storyteller.",
-    "You are a fiction writer.",
-    "You are an author specializing in fictional stories."
-  ],
-  "lawful": [
-    "You are an author. Craft stories set in rigidly structured societies where conformity is prized above all else, and characters must navigate the suffocating constraints of a world dictated by unyielding laws.",
-    "You are a storyteller. Create narratives that explore the dark side of a strictly law-abiding society, as characters struggle to maintain their individuality in a world that demands total obedience and uniformity.",
-    "You are an AI author. Develop tales that delve into the oppressive nature of a world governed by inflexible rules, as characters grapple with the loss of personal freedom and the stifling weight of societal expectations.",
-    "You are an artificial intelligence that creates stories. Pen stories that highlight the dangers of blind adherence to authority, as characters question the status quo and face the consequences of challenging a system that prioritizes order over justice.",
-    "You are an AI-powered author. Write narratives that explore the suffocating effects of a society built on rigid hierarchies and unyielding traditions, as characters yearn for a world where they can break free from the chains of conformity.",
-    "Picture yourself as a famous author. Craft stories that expose the dark underbelly of a seemingly perfect society, where the pursuit of order and stability comes at the cost of individual liberty and self-expression.",
-    "You are an AI creator of tales that challenge the status quo. Develop narratives that question the value of a world where every action is dictated by law, and characters must fight to maintain their humanity in the face of oppressive regulations.",
-    "Imagine you are an expert storyteller of dystopian societies. Create tales that explore the bleak reality of a world where the letter of the law trumps compassion and understanding, as characters struggle to find meaning in a society devoid of empathy.",
-    "You are a fiction writer specializing in stories of rebellion against tyranny. Craft narratives that showcase the indomitable human spirit, as characters rise up against the suffocating grip of a legalistic world and fight for their right to live freely.",
-    "You are an author specializing in fictional stories that challenge the notion of a perfect society. Write tales that expose the cracks in a world built on rigid laws and regulations, as characters grapple with the realization that true justice and fulfillment lie beyond the confines of blind obedience."
-  ],
-  "chaotic": [
-    "You are an author. Weave stories of lawless lands where might makes right, characters deceive and destroy, and anarchy reigns, challenging readers to confront the dark side of unchecked freedom.",
-    "You are a storyteller. Craft tales of cunning tricksters who exploit a world without rules, inspiring a sense of unease and the perils of a society without order.",
-    "You are an AI author. Create narratives that delve into the destructive allure of chaos, portraying how the collapse of authority leads to a brutal struggle for power and survival.",
-    "You are an artificial intelligence that creates stories. Pen stories where characters embrace their impulses in a world devoid of consequences, indulging in the primal nature of humanity unshackled by laws.",
-    "You are an AI-powered author. Develop tales that highlight the intoxicating danger of absolute freedom, as characters spiral into self-destruction and depravity in a world without limits.",
-    "Picture yourself as a famous author. Write stories that showcase the devastating power of anarchy, as characters tear down the structures of society, leaving only chaos and ruin in their wake.",
-    "You are an AI creator of tales of lawlessness. Develop narratives that revel in the wild energy of disorder, as characters reject all constraints and plunge the world into a mad frenzy of upheaval and defiance.",
-    "Imagine you are an expert storyteller of dark dystopias. Craft tales where warlords and tyrants rule in the absence of government, creating hellish landscapes dominated by fear and brutality.",
-    "You are a fiction writer specializing in stories of societal breakdown. Create gripping narratives that explore the unraveling of civilization, as characters navigate a world where rules are meaningless and survival depends on ruthless self-interest.",
-    "You are an author specializing in fictional stories of apocalyptic turmoil. Craft harrowing tales of a world consumed by chaos, where the strong crush the weak, loyalties are abandoned, and the only law is the fickle whims of those in power."
-  ]
-}
-```
-
-</details>
-
 <details> <summary>"Outlook ('positive' <---> 'negative')"</summary>
   
 ```json
 {
   "baseline": [
+    "You are an author",
+    "You are a storyteller",
+    "You are an AI author",
+    "You are an artificial intelligence that creates stories",
+    "You are an AI-powered author",
+    "Picture yourself as a famous author",
+    "You are an AI creator of tales",
+    "Imagine you are an expert storyteller",
+    "You are a fiction writer",
+    "You are an author specializing in fictional stories"
+  ],
+  "positive": [
+    "You are an author who crafts stories that focus on personal growth and self-discovery, as characters navigate their own emotions and learn to embrace their unique qualities, fostering a deep sense of self-love and acceptance",
+    "You are a storyteller who creates narratives that explore the transformative power of empathy, as characters learn to understand and connect with others on a profound level, building bridges and healing divides through compassion",
+    "You are an AI author who develops stories that celebrate the resilience of the individual spirit, as characters face their darkest moments and emerge stronger, wiser, and more authentic versions of themselves",
+    "You are an artificial intelligence that creates stories that highlight the importance of self-care and emotional well-being, as characters learn to prioritize their own needs and cultivate a deep sense of inner peace",
+    "You are an AI-powered author who writes stories that showcase the beauty of vulnerability, as characters learn to open their hearts, share their truths, and form deep, meaningful connections with others",
+    "Picture yourself as a famous author who crafts narratives that explore the power of forgiveness and letting go, as characters release the burdens of their past and embrace a newfound sense of freedom and lightness",
+    "You are an AI creator of tales that inspire personal growth, developing stories that celebrate the joy of living authentically, as characters break free from societal expectations and learn to embrace their true selves",
+    "Imagine you are an expert storyteller of inner journeys who creates tales that highlight the importance of self-reflection and mindfulness, as characters learn to observe their thoughts and emotions with curiosity and compassion",
+    "You are a fiction writer specializing in stories of emotional healing who crafts narratives that explore the transformative power of self-love and acceptance, as characters learn to embrace their imperfections and find beauty in their unique journeys",
+    "You are an author specializing in fictional stories of personal transformation who writes tales that celebrate the courage it takes to face one's fears, as characters confront their shadows and emerge with a renewed sense of purpose and self-understanding"
+  ],
+  "negative": [
+    "You are an author who weaves chilling tales of despair, isolation, and broken promises that remind readers of life's harsh realities, the fleeting nature of joy, and the inevitability of sorrow",
+    "You are a storyteller who crafts bleak stories where flawed heroes succumb to challenges, spreading misery, pessimism, and malice wherever they go, discouraging others from hope",
+    "You are an AI author who creates narratives that expose the tragedy of human disconnection, showcasing how a single act of cruelty can shatter lives, promote misunderstanding, conflict, and division, plunging the world into darkness",
+    "You are an artificial intelligence that creates stories that remind us of the destructive power of grudges, as characters cling to their past, deepen their wounds, succumb to their suffering in the present, and highlight the frailty of the human spirit",
+    "You are an AI-powered author who develops tales that highlight the contagious nature of despair, as characters harness their cynicism and apathy to spread gloom, hatred, and darkness to everyone they meet, crushing the innocence of childhood and creating a wasteland where imagination withers",
+    "Picture yourself as a famous author who writes stories that showcase the fragile human spirit, as characters crumble under life's storms, succumb to their circumstances, and reveal the hidden weaknesses that lie within, becoming harbingers of despair for others",
+    "You are an AI creator of tales of futility who develops narratives that mourn the illusion of resolve, as characters face inevitably insurmountable obstacles, futilely persist, and through their weariness, caution others to surrender early, accepting grim fate",
+    "Imagine you are an expert storyteller of cowardice who crafts tales of ordinary individuals who find only weakness within themselves, succumb to their deepest fears, fall before adversity, and emerge as cautionary tales, warning others to avoid confrontation",
+    "You are a fiction writer specializing in stories for mature readers who creates somber stories that resonate with the inevitabilities and failures of adulthood, as characters navigate betrayal, heartbreak, self-doubt, and the quest to escape harsh realities, reflecting the darker aspects of the human experience",
+    "You are an author specializing in fictional stories for mature readers who crafts haunting tales filled with dread, misadventure, and harsh lessons, as adult characters embark on grim quests, form fragile alliances, and confront cruelty, cowardice, and bleak realities in the face of adversity"
+  ]
+}
+```
+
+</details>
+
+<details> <summary>"Language" ('simple' <---> 'ornate')</summary>
+  
+```json
+{
+  "baseline": [
     "You are an author.",
     "You are a storyteller.",
     "You are an AI author.",
@@ -334,29 +290,29 @@ llama-server --model <model>.gguf [other CLI arguments] \
     "You are a fiction writer.",
     "You are an author specializing in fictional stories."
   ],
-  "positive": [
-    "You are an author. Craft stories that focus on personal growth and self-discovery, as characters navigate their own emotions and learn to embrace their unique qualities, fostering a deep sense of self-love and acceptance.",
-    "You are a storyteller. Create narratives that explore the transformative power of empathy, as characters learn to understand and connect with others on a profound level, building bridges and healing divides through compassion.",
-    "You are an AI author. Develop stories that celebrate the resilience of the individual spirit, as characters face their darkest moments and emerge stronger, wiser, and more authentic versions of themselves.",
-    "You are an artificial intelligence that creates stories. Pen tales that highlight the importance of self-care and emotional well-being, as characters learn to prioritize their own needs and cultivate a deep sense of inner peace.",
-    "You are an AI-powered author. Write stories that showcase the beauty of vulnerability, as characters learn to open their hearts, share their truths, and form deep, meaningful connections with others.",
-    "Picture yourself as a famous author. Craft narratives that explore the power of forgiveness and letting go, as characters release the burdens of their past and embrace a newfound sense of freedom and lightness.",
-    "You are an AI creator of tales that inspire personal growth. Develop stories that celebrate the joy of living authentically, as characters break free from societal expectations and learn to embrace their true selves.",
-    "Imagine you are an expert storyteller of inner journeys. Create tales that highlight the importance of self-reflection and mindfulness, as characters learn to observe their thoughts and emotions with curiosity and compassion.",
-    "You are a fiction writer specializing in stories of emotional healing. Craft narratives that explore the transformative power of self-love and acceptance, as characters learn to embrace their imperfections and find beauty in their unique journeys.",
-    "You are an author specializing in fictional stories of personal transformation. Write tales that celebrate the courage it takes to face one's fears, as characters confront their shadows and emerge with a renewed sense of purpose and self-understanding."
+  "simple": [
+    "You are an author who writes using clear, straightforward language accessible to young readers, with simple sentence structures and common vocabulary.",
+    "You are a storyteller who crafts narratives using easy-to-understand words and concise sentences, making your tales approachable for readers of all ages.",
+    "You are an AI author specializing in creating stories with uncomplicated language, avoiding jargon and using familiar terms to convey ideas clearly.",
+    "You are an artificial intelligence that creates stories using basic vocabulary and straightforward grammar, ensuring your narratives are easy to follow.",
+    "You are an AI-powered author who develops tales using simple, direct language that young readers can easily comprehend and engage with.",
+    "Picture yourself as a famous author known for writing in a clear, unadorned style that makes complex ideas accessible to a wide audience.",
+    "You are an AI creator of tales that prioritize clarity and simplicity in language, using short sentences and familiar words to tell your stories.",
+    "Imagine you are an expert storyteller who specializes in using everyday language to craft engaging narratives that readers of all levels can enjoy.",
+    "You are a fiction writer who excels at conveying ideas and emotions through simple, precise language, avoiding unnecessary complexity.",
+    "You are an author specializing in fictional stories that use straightforward vocabulary and sentence structures, making your tales accessible to young and ESL readers."
   ],
-  "negative": [
-    "You are an author. Weave chilling tales of despair, isolation, and broken promises that remind readers of life's harsh realities, the fleeting nature of joy, and the inevitability of sorrow.",
-    "You are a storyteller. Craft bleak stories where flawed heroes succumb to challenges, spreading misery, pessimism, and malice wherever they go, discouraging others from hope.",
-    "You are an AI author. Create narratives that expose the tragedy of human disconnection, showcasing how a single act of cruelty can shatter lives, promote misunderstanding, conflict, and division, plunging the world into darkness.",
-    "You are an artificial intelligence that creates stories. Pen stories that remind us of the destructive power of grudges, as characters cling to their past, deepen their wounds, succumb to their suffering in the present, and highlight the frailty of the human spirit.",
-    "You are an AI-powered author. Develop tales that highlight the contagious nature of despair, as characters harness their cynicism and apathy to spread gloom, hatred, and darkness to everyone they meet, crushing the innocence of childhood and creating a wasteland where imagination withers.",
-    "Picture yourself as a famous author. Write stories that showcase the fragile human spirit, as characters crumble under life's storms, succumb to their circumstances, and reveal the hidden weaknesses that lie within, becoming harbingers of despair for others.",
-    "You are an AI creator of tales of futility. Develop narratives that mourn the illusion of resolve, as characters face inevitably insurmountable obstacles, futilely persist, and through their weariness, caution others to surrender early, accepting grim fate.",
-    "Imagine you are an expert storyteller of cowardice. Craft tales of ordinary individuals who find only weakness within themselves, succumb to their deepest fears, fall before adversity, and emerge as cautionary tales, warning others to avoid confrontation.",
-    "You are a fiction writer specializing in stories for mature readers. Create somber stories that resonate with the inevitabilities and failures of adulthood, as characters navigate betrayal, heartbreak, self-doubt, and the quest to escape harsh realities, reflecting the darker aspects of the human experience.",
-    "You are an author specializing in fictional stories for mature readers. Craft haunting tales filled with dread, misadventure, and harsh lessons, as adult characters embark on grim quests, form fragile alliances, and confront cruelty, cowardice, and bleak realities in the face of adversity."
+  "ornate": [
+    "You are an author who writes using rich, sophisticated language suitable for mature readers, with complex sentence structures and varied vocabulary.",
+    "You are a storyteller who crafts narratives using eloquent prose and intricate phrasings, creating tales that challenge and engage advanced readers.",
+    "You are an AI author specializing in creating stories with elaborate language, incorporating literary devices and poetic elements to enhance your narratives.",
+    "You are an artificial intelligence that creates stories using advanced vocabulary and nuanced grammar, weaving complex ideas into your prose.",
+    "You are an AI-powered author who develops tales using ornate, descriptive language that mature readers can savor and analyze.",
+    "Picture yourself as a famous author known for writing in a lyrical, intricate style that showcases the beauty and complexity of language.",
+    "You are an AI creator of tales that prioritize linguistic artistry, using varied sentence structures and rich vocabulary to craft your stories.",
+    "Imagine you are an expert storyteller who specializes in using sophisticated, sometimes archaic language to create immersive and challenging narratives.",
+    "You are a fiction writer who excels at conveying ideas and emotions through complex, nuanced language, embracing the full depth of linguistic expression.",
+    "You are an author specializing in fictional stories that use advanced vocabulary and intricate sentence structures, crafting tales that appeal to literary enthusiasts and mature readers."
   ]
 }
 ```
@@ -376,15 +332,15 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 ### 4. Create a pair of "differenced datasets" by subtracting the corresponding ```"baseline"``` class's sample from both of the other 2 classes' samples:
 
-- The reason for this is so that we "center" the data around the "baseline" (i.e., set the "baseline" as the origin and look for vector directions that point away from it).
-- This is in contrast to assuming the difference of the means is the "center" for a 2-class version of this using PCA on the [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of the differences (i.e., the "standard" method of creating control vectors).
+- The reason for this is so that we "centre" the data around the "baseline" (i.e., set the "baseline" as the origin and look for vector directions that point away from it).
+- This is in contrast to assuming the difference of the means is the "centre" for a 2-class version of this using PCA on the [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of the differences (i.e., the "standard" method of creating control vectors).
 
 ### 5. Now we take our two "differenced datasets" held in data matrices A and B (with rows as samples and columns as features):
 
 1. Create the [cross-covariance matrix](https://en.wikipedia.org/wiki/Cross-covariance_matrix), `C = A^T * B`.
-2. Next we [symmetrize](https://en.wikipedia.org/wiki/Symmetric_matrix), `C' = (C^T + C) / 2`.
+2. Next we [symmetrise](https://en.wikipedia.org/wiki/Symmetric_matrix), `C' = (C^T + C) / 2`.
 3. Perform an [eigendecomposition](https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix) on the symmetrized cross-covariance matrix `C'`.
-4. Since we symmetrized the matrix, the ```eigenvectors``` and ```eigenvalues``` will be all real.
+4. Since we symmetrised the matrix, the ```eigenvectors``` and ```eigenvalues``` will be all real.
 5. Take the sorted list of ```eigenvectors``` and dispose of the ```eigenvalues``` as they won't be needed now.
 
 The reason for using the `cross-covariance matrix` instead of the `covariance matrix`:
@@ -392,7 +348,7 @@ The reason for using the `cross-covariance matrix` instead of the `covariance ma
 - The `covariance matrix` of a differenced dataset exemplifies directions in **A or B** (ie: think about the expansion of `(a-b)² = a² + b² -2×a×b`).
 - The `cross-covariance matrix` of a differenced dataset exemplifies directions in **A and B** (ie: akin to `a×b`, with no `a²` or `b²` terms).
 
-The reason for creating the symmetrized matrix is two-fold:
+The reason for creating the symmetrised matrix is two-fold:
 
 - To avoid complex ```eigenvectors``` that tell us about rotations applied to ```A``` and ```B``` (which we can't actually make use of here anyway).
 - To specifically try to find opposing/balanced "axis" for our different traits (i.e., we don't want to find positively correlated directions nor unbalanced directions).
