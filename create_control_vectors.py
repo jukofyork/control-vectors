@@ -26,6 +26,7 @@ def main(
     skip_begin_layers,
     skip_end_layers,
     discriminant_ratio_tolerance,
+    balancedness_score_exponent,
     regularisation_factor
 ):
     signal.signal(signal.SIGINT, signal_handler)
@@ -48,6 +49,7 @@ def main(
         skip_begin_layers,
         skip_end_layers,
         discriminant_ratio_tolerance,
+        balancedness_score_exponent,
         regularisation_factor
     )
 
@@ -83,8 +85,9 @@ if __name__ == "__main__":
     parser.add_argument("--use_separate_system_message", action="store_true", default=False, help="Use separate system message in conversation.")
     parser.add_argument("--skip_begin_layers", type = int, default = 0, help = "The number (or fraction) of initial layers to skip.")
     parser.add_argument("--skip_end_layers", type = int, default = 1, help = "The number (or fraction) of end layers to skip.")
-    parser.add_argument("--discriminant_ratio_tolerance", type = float, default = 0.25, help = "Used to filter low signal \"noise\" directions.")
-    parser.add_argument("--regularisation_factor", type = float, default = 1.0, help = "Regularisation via \"soft thresholding\" mean shrinkage.")
+    parser.add_argument("--discriminant_ratio_tolerance", type = float, default = 0.5, help = "Used to filter low signal \"noise\" directions (0 = none).")
+    parser.add_argument("--balancedness_score_exponent", type = float, default = 0.0, help = "Penalise the Discriminant Ratio via the \"balancedness\" score (0 = none).")
+    parser.add_argument("--regularisation_factor", type = float, default = 1.0, help = "Regularisation via \"soft thresholding\" mean shrinkage (0 = none).")
     args = parser.parse_args()
     main(
         args.model_id,
@@ -96,5 +99,6 @@ if __name__ == "__main__":
         args.skip_begin_layers,
         args.skip_end_layers,
         args.discriminant_ratio_tolerance,
+        args.balancedness_score_exponent,
         args.regularisation_factor
     )
