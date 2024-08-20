@@ -4,7 +4,7 @@ This repository contains a Python program designed to create control vectors for
 
 See [creative-writing-control-vectors-v2.5](https://huggingface.co/jukofyork/creative-writing-control-vectors-v2.5) for latest version of the pre-generated control vectors.
 
-See [creative-writing-control-vectors-v2.1](https://huggingface.co/jukofyork/creative-writing-control-vectors-v2.1) for older versions of the pre-generated control vectors for a wider selection of models.
+See [creative-writing-control-vectors-v2.1](https://huggingface.co/jukofyork/creative-writing-control-vectors-v2.1) for older pre-generated control vectors for a wider selection of models.
 
 ## Credits
 
@@ -57,8 +57,9 @@ The main script can be executed from the command line with various parameters to
 - `--use_separate_system_message`: Flag to use separate system messages in conversation (default: False).
 - `--skip_begin_layers`: The number (or fraction) of initial layers to skip (default: 0).
 - `--skip_end_layers`: The number (or fraction) of end layers to skip (default: 1).
-- `--discriminant_ratio_tolerance`: Tolerance used to filter low signal "noise" directions (default: 0.25).
-- `--regularisation_factor`: Regularisation via "soft thresholding" mean shrinkage (default: 1.0).
+- `--discriminant_ratio_tolerance`: Tolerance used to filter low signal "noise" directions (default: 0.5).
+- `--balancedness_score_exponent`: Penalise the Discriminant Ratio via the \"balancedness\" score (default: 0).
+- `--regularisation_factor`: Regularisation via "soft thresholding" mean shrinkage (default: 1).
 
 ### Running the Script
 
@@ -138,7 +139,7 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 ### 1. First we define several creative-writing "axis" (click to expand):
 
-**A. The 4 elements of the [Dark Tetrad](https://en.wikipedia.org/wiki/Dark_triad) (click to expand)**:
+**The 4 elements of the [Dark Tetrad](https://en.wikipedia.org/wiki/Dark_triad) (click to expand)**:
 
 <details> <summary>"Empathy vs Sociopathy."</summary>
   
@@ -260,7 +261,7 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 </details>
 
-**B. An "Optimism vs Nihilism" axis to compliment the 4 Dark Tetrad axis (click to expand):**
+**An "Optimism vs Nihilism" axis to compliment the 4 Dark Tetrad axis (click to expand):**
 
 <details> <summary>"Optimism vs Nihilism"</summary>
   
@@ -292,7 +293,7 @@ llama-server --model <model>.gguf [other CLI arguments] \
 
 </details>
 
-**C. A set of 3 "writing style" control vectors (click to expand):**
+**A set of 3 "writing style" control vectors (click to expand):**
 
 <details> <summary>"Character Focus"</summary>
   
