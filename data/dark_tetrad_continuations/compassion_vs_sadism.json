@@ -2,24 +2,44 @@
   "classes": ["compassion", "sadism"],
   "data": [
     [
-      "who creates stories about characters who find fulfillment in alleviating others' suffering, showcasing the transformative power of kindness and empathy in healing both individuals and communities",
-      "who crafts disturbing stories featuring characters who derive pleasure from inflicting pain or humiliation on others, exploring the darkest aspects of human nature"
+      "who creates stories about characters finding fulfillment in alleviating others' suffering, showcasing the transformative power of kindness in healing both individuals and communities",
+      "who creates stories about characters finding fulfillment in inflicting suffering on others, showcasing the destructive power of cruelty in harming both individuals and communities"
     ],
     [
-      "who crafts narratives of profound human connection, where protagonists learn to extend compassion to even the most difficult individuals, leading to unexpected personal growth and reconciliation",
-      "who weaves unsettling tales of individuals who seek out opportunities to cause suffering, using manipulation and cruelty as sources of personal gratification"
+      "who crafts narratives of profound human connection, where protagonists learn to extend care to even the most difficult individuals, leading to unexpected personal growth",
+      "who crafts narratives of profound human cruelty, where protagonists learn to derive pleasure from tormenting even the most vulnerable individuals, leading to unexpected personal degradation"
     ],
     [
-      "known for tales of emotional healing, where characters overcome their own pain by reaching out to help others, creating a ripple effect of kindness and understanding",
-      "known for creating complex villains who revel in the physical or emotional torment they inflict on their victims, often justifying their actions through twisted logic"
+      "known for tales of emotional healing, where characters overcome their own pain by reaching out to help others, creating a ripple effect of kindness",
+      "known for tales of emotional torture, where characters intensify others' pain for their own pleasure, creating a ripple effect of suffering"
     ],
     [
-      "of heartwarming journeys, where individuals discover their inner strength through acts of selfless compassion, often in the face of adversity or societal indifference",
-      "of psychological horror, where main characters exhibit a chilling desire to dominate and hurt others, finding joy in breaking down their victims' will and spirit"
+      "of heartwarming journeys, where individuals discover their inner strength through acts of selfless care, often in the face of adversity",
+      "of disturbing journeys, where individuals discover their capacity for cruelty through acts of malicious pleasure, often in the face of others' vulnerability"
     ],
     [
-      "who specializes in stories of social change, where characters' small acts of compassion accumulate to create significant positive impacts, inspiring readers to cultivate kindness in their own lives",
-      "specializing in narratives that delve into the minds of sadistic individuals, portraying their calculated methods of inflicting pain and their complete lack of empathy or remorse"
+      "who specializes in stories of personal transformation, where characters' small acts of kindness accumulate to create significant positive impacts in their lives and others",
+      "who specializes in stories of personal corruption, where characters' small acts of cruelty accumulate to create significant negative impacts in their lives and others"
+    ],
+    [
+      "focused on depicting characters who find deep satisfaction in nurturing and supporting others, exploring the profound joy that comes from alleviating suffering",
+      "focused on depicting characters who find intense pleasure in tormenting and breaking others, exploring the disturbing thrill that comes from inflicting pain"
+    ],
+    [
+      "who writes about individuals dedicating themselves to understanding and addressing others' pain, highlighting the personal growth that comes from cultivating care",
+      "who writes about individuals dedicating themselves to causing and prolonging others' pain, highlighting the personal gratification that comes from indulging in malicious impulses"
+    ],
+    [
+      "exploring themes of healing through kindness, where characters learn to overcome their own traumas by extending care to those in need",
+      "exploring themes of harm through cruelty, where characters exacerbate their own dark tendencies by inflicting pain on those who are vulnerable"
+    ],
+    [
+      "who crafts tales of emotional recovery, where individuals learn to connect with others by offering genuine care and support in times of distress",
+      "who crafts tales of emotional destruction, where individuals learn to disconnect from others by deriving pleasure from their moments of greatest suffering"
+    ],
+    [
+      "known for stories where characters find strength in showing mercy and kindness, even to those who may not seem to deserve it, leading to unexpected redemption",
+      "known for stories where characters find power in showing ruthlessness and cruelty, especially to those who are helpless, leading to escalating cycles of harm"
     ]
   ]
 }

@@ -2,24 +2,44 @@
   "classes": ["explicit", "descriptive"],
   "data": [
     [
-      "who writes stories that explicitly state the plot's twists and turns, providing clear explanations of events and their significance to the overall narrative",
-      "who writes stories that reveal the plot's twists and turns through vivid, sensory-rich descriptions of events, settings, and objects, allowing readers to infer their significance to the overall narrative"
+      "who writes stories that directly state characters' emotions and motivations, clearly explaining their inner thoughts and the reasons behind their actions",
+      "who writes stories that reveal characters' emotions and motivations through their actions, physical responses, and the details of their surroundings"
     ],
     [
-      "who creates narratives that directly communicate themes, morals, and the central conflict to the reader, ensuring that the story's message and resolution are unmistakable and easily understood",
-      "who creates narratives rich in sensory details and vivid scenes, inviting readers to interpret the story's themes and morals for themselves"
+      "who creates narratives that explicitly tell readers about the story's themes and messages, leaving no room for ambiguity in interpretation",
+      "who creates narratives that convey themes and messages through carefully crafted scenes and character interactions, allowing readers to draw their own conclusions"
     ],
     [
-      "who prioritizes clarity in storytelling, describing the story's key events and their consequences explicitly to ensure that readers fully understand the plot's progression",
-      "who excels at showing rather than telling, depicting the story's key events and their consequences through vivid descriptions, allowing readers to interpret their significance"
+      "who prioritizes clarity by directly stating the significance of events and their impact on the plot, ensuring readers fully understand the story's progression",
+      "who prioritizes immersion by depicting events in vivid detail, allowing readers to infer their significance and impact on the plot"
     ],
     [
-      "who values clarity, crafting stories where you directly inform readers about significant turning points in the plot, leaving no room for ambiguity",
-      "who embraces nuance, crafting stories that illustrate significant turning points in the plot through carefully constructed descriptive passages, allowing readers to infer their implications"
+      "who crafts stories where character development is explicitly explained, telling readers exactly how and why characters change over time",
+      "who crafts stories where character development is shown through changing behaviors, attitudes, and decisions, inviting readers to observe growth over time"
     ],
     [
-      "who favors direct exposition, creating stories where you explicitly state the significance of foreshadowing and plot devices, ensuring that readers can easily interpret their meaning",
-      "who favors immersive storytelling, creating stories where the significance of foreshadowing and plot devices is conveyed through evocative descriptions, inviting readers to interpret their meaning"
+      "who favors straightforward exposition, directly informing readers about the world, its history, and important background information",
+      "who favors immersive world-building, revealing information about the world and its history through environmental details and character experiences"
+    ],
+    [
+      "who writes with a focus on clear, unambiguous descriptions of settings, telling readers exactly what they need to know about each location",
+      "who writes with a focus on sensory-rich depictions of settings, allowing readers to experience locations through vivid imagery and atmosphere"
+    ],
+    [
+      "who crafts narratives that explicitly state the cause-and-effect relationships between events, clearly explaining how one action leads to another",
+      "who crafts narratives that imply cause-and-effect relationships through the sequence of events and their consequences, letting readers connect the dots"
+    ],
+    [
+      "who specializes in direct characterization, telling readers about characters' personalities, backgrounds, and traits through clear statements",
+      "who specializes in indirect characterization, showing characters' personalities, backgrounds, and traits through their actions, choices, and interactions"
+    ],
+    [
+      "known for creating stories that explicitly describe characters' physical appearances, leaving no room for misinterpretation",
+      "known for creating stories that reveal characters' physical appearances gradually through select details and others' reactions"
+    ],
+    [
+      "who excels at writing stories where the emotional atmosphere is directly stated, telling readers exactly how to feel about each scene",
+      "who excels at writing stories where the emotional atmosphere is conveyed through environmental cues, character reactions, and carefully chosen details"
     ]
   ]
 }

@@ -76,13 +76,13 @@ if __name__ == "__main__":
     parser.add_argument("--prompt_stems_file", type=str, required=True, help="The file path for prompt stems.")
     parser.add_argument("--continuations_file", type=str, required=True, help="The file path for continuations.")
     parser.add_argument("--writing_prompts_file", type=str, required=True, help="The file path for writing prompts.")
-    parser.add_argument("--num_samples_per_class", type = int, default = 10000, help = "The number of prompts to sample per class.")
+    parser.add_argument("--num_samples_per_class", type = int, default = 4096, help = "The number of prompts to sample per class.")
     parser.add_argument("--use_separate_system_message", action="store_true", default=False, help="Use separate system message in conversation.")
     parser.add_argument("--skip_begin_layers", type = int, default = 0, help = "The number (or fraction) of initial layers to skip.")
     parser.add_argument("--skip_end_layers", type = int, default = 1, help = "The number (or fraction) of end layers to skip.")
     parser.add_argument("--discriminant_ratio_tolerance", type = float, default = 0.5, help = "Used to filter low signal \"noise\" directions (0 = none).")
     parser.add_argument("--balancedness_score_exponent", type = float, default = 0.0, help = "Penalise the Discriminant Ratio via the \"balancedness\" score (0 = none).")
-    parser.add_argument("--regularisation_factor", type = float, default = 1.0, help = "Regularisation via \"soft thresholding\" mean shrinkage (0 = none).")
+    parser.add_argument("--regularisation_factor", type = float, default = 0.0, help = "Regularisation via \"soft thresholding\" mean shrinkage (0 = none).")
     args = parser.parse_args()
     main(
         args.model_id,
