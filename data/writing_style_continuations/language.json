@@ -1,0 +1,25 @@
+{
+  "classes": ["simple", "ornate"],
+  "data": [
+    [
+      "who writes using clear, straightforward language accessible to young readers, with simple sentence structures and common vocabulary",
+      "who writes using rich, sophisticated language suitable for mature readers, with complex sentence structures and varied vocabulary"
+    ],
+    [
+      "who crafts narratives using easy-to-understand words and concise sentences, making your tales approachable for readers of all ages",
+      "who crafts narratives using eloquent prose and intricate phrasings, creating tales that challenge and engage advanced readers"
+    ],
+    [
+      "known for writing in a clear, unadorned style that makes complex ideas accessible to a wide audience",
+      "known for writing in a lyrical, intricate style that showcases the beauty and complexity of language"
+    ],
+    [
+      "who specializes in using everyday language to craft engaging narratives that readers of all levels can enjoy",
+      "who specializes in using sophisticated, sometimes archaic language to create immersive and challenging narratives"
+    ],
+    [
+      "who excels at conveying ideas and emotions through simple, precise language, avoiding unnecessary complexity",
+      "who excels at conveying ideas and emotions through complex, nuanced language, embracing the full depth of linguistic expression"
+    ]
+  ]
+}
