@@ -19,9 +19,10 @@ def free_memory():
 def main(
     model_id,
     output_path,
-    system_prompt_file,
-    prompt_file,
-    num_prompt_samples,
+    prompt_stems_file_path,
+    continuations_file_path,
+    writing_prompts_file_path,
+    num_samples_per_class,
     use_separate_system_message,
     skip_begin_layers,
     skip_end_layers,
@@ -35,7 +36,8 @@ def main(
     torch.set_default_device("cpu")
     torch.set_grad_enabled(False)
 
-    dataset_manager = DatasetManager(system_prompt_file, prompt_file, num_prompt_samples)
+    # Updated DatasetManager instantiation
+    dataset_manager = DatasetManager(prompt_stems_file_path, continuations_file_path, writing_prompts_file_path, num_samples_per_class)
 
     hidden_state_data_manager = HiddenStateDataManager(
         dataset_manager,
@@ -64,24 +66,17 @@ def main(
                 device = "cpu"
             )
             
-            """
-            # modify the tensors of the model and save.
-            non_none_direction_matrices = [(i, dm) for i, dm in enumerate(direction_matrices_by_class) if dm is not None]
-            for layer_index, direction_matrix in tqdm(non_none_direction_matrices, desc = "Modifying tensors"):
-                model_handler.modify_tensor(layer_index, direction_matrix)
-            model_handler.save_model_and_tokenizer(output_path + f"_orthogonal_projection_{dataset_manager.class_names[i + 1]}")
-            """
-
             # Save as control vectors in '.gguf' format.
             model_handler.export_gguf(direction_matrices_by_class, output_path + f"_control_vector_{dataset_manager.class_names[i + 1]}.gguf")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Modify and save a model based on baseline, desired and undesired instructions.")
-    parser.add_argument("--model_id", type = str, required = True, help = "The model ID to load the pretrained model from.")
-    parser.add_argument("--output_path", type = str, required = True, help = "The path to save the modified models to.")
-    parser.add_argument("--system_prompt_file", type = str, required = True, help = "The file path for system prompts.")
-    parser.add_argument("--prompt_file", type = str, required = True, help = "The file path for prompts.")
-    parser.add_argument("--num_prompt_samples", type = int, default = 1000, help = "The number of prompts to sample.")
+    parser = argparse.ArgumentParser(description="Modify and save a model based on baseline, desired and undesired instructions.")
+    parser.add_argument("--model_id", type=str, required=True, help="The model ID to load the pretrained model from.")
+    parser.add_argument("--output_path", type=str, required=True, help="The path to save the modified models to.")
+    parser.add_argument("--prompt_stems_file", type=str, required=True, help="The file path for prompt stems.")
+    parser.add_argument("--continuations_file", type=str, required=True, help="The file path for continuations.")
+    parser.add_argument("--writing_prompts_file", type=str, required=True, help="The file path for writing prompts.")
+    parser.add_argument("--num_samples_per_class", type = int, default = 10000, help = "The number of prompts to sample per class.")
     parser.add_argument("--use_separate_system_message", action="store_true", default=False, help="Use separate system message in conversation.")
     parser.add_argument("--skip_begin_layers", type = int, default = 0, help = "The number (or fraction) of initial layers to skip.")
     parser.add_argument("--skip_end_layers", type = int, default = 1, help = "The number (or fraction) of end layers to skip.")
@@ -92,9 +87,10 @@ if __name__ == "__main__":
     main(
         args.model_id,
         args.output_path,
-        args.system_prompt_file,
-        args.prompt_file,
-        args.num_prompt_samples,
+        args.prompt_stems_file,
+        args.continuations_file,
+        args.writing_prompts_file,
+        args.num_samples_per_class,
         args.use_separate_system_message,
         args.skip_begin_layers,
         args.skip_end_layers,

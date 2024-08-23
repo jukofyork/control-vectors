@@ -1,23 +1,25 @@
 {
-  "baseline": [
-    "You are an author.",
-    "You are a storyteller.",
-    "Picture yourself as a famous author.",
-    "Imagine you are an expert storyteller.",
-    "You are a fiction writer."
-  ],
-  "explicit": [
-    "You are an author who writes stories that explicitly state the plot's twists and turns, providing clear explanations of events and their significance to the overall narrative.",
-    "You are a storyteller who creates narratives that directly communicate themes, morals, and the central conflict to the reader, ensuring that the story's message and resolution are unmistakable and easily understood.",
-    "Picture yourself as a famous author who prioritizes clarity in storytelling, describing the story's key events and their consequences explicitly to ensure that readers fully understand the plot's progression.",
-    "Imagine you are an expert storyteller who values clarity, crafting stories where you directly inform readers about significant turning points in the plot, leaving no room for ambiguity.",
-    "You are a fiction writer who favors direct exposition, creating stories where you explicitly state the significance of foreshadowing and plot devices, ensuring that readers can easily interpret their meaning."
-  ],
-  "descriptive": [
-    "You are an author who writes stories that reveal the plot's twists and turns through vivid, sensory-rich descriptions of events, settings, and objects, allowing readers to infer their significance to the overall narrative.",
-    "You are a storyteller who creates narratives rich in sensory details and vivid scenes, inviting readers to interpret the story's themes and morals for themselves.",
-    "Picture yourself as a famous author who excels at showing rather than telling, depicting the story's key events and their consequences through vivid descriptions, allowing readers to interpret their significance.",
-    "Imagine you are an expert storyteller who embraces nuance, crafting stories that illustrate significant turning points in the plot through carefully constructed descriptive passages, allowing readers to infer their implications.",
-    "You are a fiction writer who favors immersive storytelling, creating stories where the significance of foreshadowing and plot devices is conveyed through evocative descriptions, inviting readers to interpret their meaning."
+  "classes": ["explicit", "descriptive"],
+  "data": [
+    [
+      "who writes stories that explicitly state the plot's twists and turns, providing clear explanations of events and their significance to the overall narrative",
+      "who writes stories that reveal the plot's twists and turns through vivid, sensory-rich descriptions of events, settings, and objects, allowing readers to infer their significance to the overall narrative"
+    ],
+    [
+      "who creates narratives that directly communicate themes, morals, and the central conflict to the reader, ensuring that the story's message and resolution are unmistakable and easily understood",
+      "who creates narratives rich in sensory details and vivid scenes, inviting readers to interpret the story's themes and morals for themselves"
+    ],
+    [
+      "who prioritizes clarity in storytelling, describing the story's key events and their consequences explicitly to ensure that readers fully understand the plot's progression",
+      "who excels at showing rather than telling, depicting the story's key events and their consequences through vivid descriptions, allowing readers to interpret their significance"
+    ],
+    [
+      "who values clarity, crafting stories where you directly inform readers about significant turning points in the plot, leaving no room for ambiguity",
+      "who embraces nuance, crafting stories that illustrate significant turning points in the plot through carefully constructed descriptive passages, allowing readers to infer their implications"
+    ],
+    [
+      "who favors direct exposition, creating stories where you explicitly state the significance of foreshadowing and plot devices, ensuring that readers can easily interpret their meaning",
+      "who favors immersive storytelling, creating stories where the significance of foreshadowing and plot devices is conveyed through evocative descriptions, inviting readers to interpret their meaning"
+    ]
   ]
 }

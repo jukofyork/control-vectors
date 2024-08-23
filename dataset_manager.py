@@ -7,35 +7,49 @@ class DatasetManager:
 
     def __init__(
         self,
-        system_message_file_path: str,
-        prompt_file_path: str,
-        max_samples: int
+        prompt_stems_file_path: str,
+        continuations_file_path: str,
+        writing_prompts_file_path: str,
+        num_samples_per_class: int,
+        use_baseline_class: bool = True
     ):
-        self.class_names: List[str] =[]
-        self.system_messages: List[List[str]] = []
-        
-        self.prompts: List[str] = []
-
+        self.class_names: List[str] = []
         self.datasets = []
-
-        self._load_system_messages(system_message_file_path)
-        self._load_prompts(prompt_file_path)
-        self._generate_datasets(max_samples)
+        
+        self.pre_prompt_stems: List[str] = []
+        self.post_prompt_stems: List[str] = []
+        self.continuations: List[List[str]] = []
+        self.writing_prompts: List[str] = []
+        
+        self.use_baseline_class = use_baseline_class
+        
+        self._load_prompt_stems(prompt_stems_file_path)
+        self._load_continuations(continuations_file_path)
+        self._load_writing_prompts(writing_prompts_file_path)
+                
+        self._generate_datasets(num_samples_per_class)
+        
+        #self.print_datasets()
 
     def get_num_classes(self) -> int:
         return len(self.class_names)
     
-    def get_num_system_messages(self) -> int:
-        return len(self.system_messages)
-
-    def get_num_prompts(self) -> int:
-        return len(self.prompts)
-
     def get_total_samples(self) -> int:
         return sum(len(dataset) for dataset in self.datasets)
 
-    def _load_system_messages(self, file_path: str) -> None:
-        print(f"Loading system messages from '{file_path}'... ", end="")
+    def print_datasets(self) -> None:
+        print("Printing contents of datasets:")
+        for index, dataset in enumerate(self.datasets):
+            if index >= len(self.class_names):
+                raise IndexError("Dataset index exceeds the number of available class names.")
+            class_name = self.class_names[index]
+            print(f"Dataset for class '{class_name}':")
+            for data in dataset:
+                print(data)
+            print()
+
+    def _load_prompt_stems(self, file_path: str) -> None:
+        print(f"Loading pre/post prompt stems from '{file_path}'... ", end="")
         sys.stdout.flush()
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
@@ -47,54 +61,77 @@ class DatasetManager:
         except json.JSONDecodeError:
             raise ValueError(f"Failed to decode JSON from {file_path}.")
     
-        if not data:
-            raise ValueError("No data loaded.")
+        if 'pre' not in data or 'post' not in data:
+            raise ValueError("JSON must contain 'pre' and 'post' keys.")
     
-        self.system_messages = []
-        self.class_names = list(data.keys())
+        self.pre_prompt_stems = data['pre']
+        self.post_prompt_stems = data['post']
     
-        # Assuming all classes have the same number of elements
-        num_messages = len(next(iter(data.values())))  # Get the length of messages from the first class
-    
-        # Initialize a list for each message index
-        for _ in range(num_messages):
-            self.system_messages.append([None] * len(self.class_names))
-    
-        # Fill each message index with messages from each class
-        for class_index, (_, class_messages) in enumerate(data.items()):
-            for message_index, message in enumerate(class_messages):
-                self.system_messages[message_index][class_index] = message
-    
-        print(f"Done ({self.get_num_classes()} classes; each with {self.get_num_system_messages()} messages loaded).")
+        print(f"Done ({len(self.pre_prompt_stems)} + {len(self.post_prompt_stems)} loaded).")
 
-    def _load_prompts(self, file_path: str) -> None:
-        print(f"Loading prompts from '{file_path}'... ", end = "")
+    def _load_continuations(self, file_path: str) -> None:
+        print(f"Loading prompt continuations from '{file_path}'... ", end="")
         sys.stdout.flush()
         try:
-            with open(file_path, "r") as f:
-                # Remove any trailing whitespace (including newlines) from each line.
-                self.prompts = [line.strip() for line in f.readlines()]
+            with open(file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
         except FileNotFoundError:
             raise FileNotFoundError(f"The file {file_path} does not exist.")
         except PermissionError:
             raise PermissionError(f"Permission denied for accessing the file {file_path}.")
-
-        if not self.prompts or self.get_num_prompts() == 0:
-            raise ValueError("No prompts loaded.")
-
-        print(f"Done ({self.get_num_prompts()} loaded).")
+        except json.JSONDecodeError:
+            raise ValueError(f"Failed to decode JSON from {file_path}.")
     
-    def _generate_datasets(self, max_samples: int) -> None:
-        if max_samples is None or max_samples >= self.get_num_prompts():
-            max_samples = self.get_num_prompts()
-        if max_samples <= 0:
-            raise ValueError("max_samples must be greater than 0.")
+        if not data or 'classes' not in data or 'data' not in data:
+            raise ValueError("Invalid or no data loaded.")
+    
+        if self.use_baseline_class:
+            self.class_names = ['baseline'] + data['classes']  # Prepend "baseline" to the class names
+        else:
+            self.class_names = data['classes']
+        self.continuations = data['data']
+    
+        print(f"Done ({self.get_num_classes()} classes; each with {len(self.continuations)} continuations loaded).")
 
+    def _load_writing_prompts(self, file_path: str) -> List[str]:
+        print(f"Loading writing prompts from '{file_path}'... ", end="")
+        sys.stdout.flush()
+        try:
+            with open(file_path, "r") as f:
+                data = [line.strip() for line in f.readlines()]
+        except FileNotFoundError:
+            raise FileNotFoundError(f"The file {file_path} does not exist.")
+        except PermissionError:
+            raise PermissionError(f"Permission denied for accessing the file {file_path}.")
+        if not data:
+            raise ValueError("Invalid or no data loaded.")
+        self.writing_prompts = data
+        print(f"Done ({len(data)} loaded).")
+
+    def _generate_system_message_tuple(self) -> tuple:
+        pre_stem = random.choice(self.pre_prompt_stems)
+        post_stem = random.choice(self.post_prompt_stems)
+        continuation = random.choice(self.continuations)
+        
+        stem = f"{pre_stem} {post_stem}"
+        if self.use_baseline_class:
+            message_tuple = (stem + ".",)  # Baseline.
+        else:
+            message_tuple = ()
+        message_tuple += tuple(f"{stem} {cont}." for cont in continuation)
+    
+        return message_tuple
+
+    def _generate_datasets(self, num_samples_per_class: int) -> None:
+        print("Generating dataset samples... ", end="")
+        sys.stdout.flush()
+        if num_samples_per_class <= 0:
+            raise ValueError("num_samples_per_class must be greater than 0.")
         self.datasets = [[] for _ in range(self.get_num_classes())]
-         
-        for system_message_tuple in self.system_messages:
-            # IMPORTANT: Use the same matched set of prompts for each system message tuple!
-            sampled_prompts = random.sample(self.prompts, max_samples)
+        for _ in range(num_samples_per_class):
+            system_message_tuple = self._generate_system_message_tuple()
+            writing_prompt = random.choice(self.writing_prompts)
+            # IMPORTANT: Use the same matched writing prompt for each in the system message tuple!
             for i, system_message in enumerate(system_message_tuple):
-                for prompt in sampled_prompts:
-                    self.datasets[i].append((system_message, prompt))
+                self.datasets[i].append((system_message, writing_prompt))
+        print(f"Done ([{self.get_num_classes()} classes x {num_samples_per_class} prompts] {self.get_total_samples()} generated).")
