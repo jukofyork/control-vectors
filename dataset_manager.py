@@ -10,7 +10,7 @@ class DatasetManager:
         prompt_stems_file_path: str,
         continuations_file_path: str,
         writing_prompts_file_path: str,
-        num_samples_per_class: int,
+        num_prompt_samples: int,
         use_baseline_class: bool = True
     ):
         self.class_names: List[str] = []
@@ -27,7 +27,7 @@ class DatasetManager:
         self._load_continuations(continuations_file_path)
         self._load_writing_prompts(writing_prompts_file_path)
                 
-        self._generate_datasets(num_samples_per_class)
+        self._generate_datasets(num_prompt_samples)
         
         #self.print_datasets()
 
@@ -122,9 +122,10 @@ class DatasetManager:
     
         return message_tuple
 
-    def _generate_datasets(self, num_samples_per_class: int) -> None:
+    def _generate_datasets(self, num_prompt_samples: int) -> None:
         print("Generating dataset samples... ", end="")
         sys.stdout.flush()
+        num_samples_per_class = int(num_prompt_samples / self.get_num_classes())
         if num_samples_per_class <= 0:
             raise ValueError("num_samples_per_class must be greater than 0.")
         self.datasets = [[] for _ in range(self.get_num_classes())]
