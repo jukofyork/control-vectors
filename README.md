@@ -841,7 +841,7 @@ The reason for creating the symmetrised matrix is two-fold:
 
 ### 8. Finally, we project the "direction" to reorient and scale as necessary:
 
-- There is no reason the **eigenvectors** point in the direction we want, so 50% of the time we have to flip all the signs by [projecting](https://en.wikipedia.org/wiki/Projection_(linear_algebra%29) our (differenced) "desired" dataset on to the (unit norm) direction and then test the sign of the mean.
+- There is no reason the **eigenvectors** point in the direction we want, so 50% of the time we have to flip all the signs by [projecting](https://en.wikipedia.org/wiki/Projection_(linear_algebra)) our (differenced) "desired" dataset on to the (unit norm) direction and then test the sign of the mean.
 - Due to the way the LLMs work via the "residual stream", the hidden states tend to get larger and larger as the layers progress, so to normalize this we also scale by the magnitude of the mean of the same projection as above.
 - To better separate the "bias" effect from the positive/negative axis (and to make the positive/negative end equidistant from the model's "baseline" behaviour) we store the mid point of these means in the de-bias control vector and then subtract the midpoint from both the positive and negative axis' control vectors.
 
