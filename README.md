@@ -4,7 +4,7 @@
 
 The Control Vector Generator is a Python program designed to create control vectors for use with [llama.cpp](https://github.com/ggerganov/llama.cpp) via analysis of hidden state activations. Control vectors allow fine-tuned control over language model outputs, enabling more precise and targeted text generation.
 
-See [creative-writing-control-vectors-v3.0](https://huggingface.co/jukofyork/creative-writing-control-vectors-v3.0) to download the latest versions of the pre-generated control vectors in [GGUF](https://github.com/ggerganov/ggml/blob/master/docs/gguf.md) format.
+See [here](https://huggingface.co/jukofyork/creative-writing-control-vectors-v3.0) to download the latest pre-generated control vectors in [GGUF](https://github.com/ggerganov/ggml/blob/master/docs/gguf.md) format.
 
 ## Table of Contents
 
@@ -78,7 +78,7 @@ The main script can be executed from the command line with various parameters to
 - `--use_separate_system_message`: Flag to use separate system messages in conversation (default: False).
 - `--skip_begin_layers`: The number (or fraction) of initial layers to skip (default: 0).
 - `--skip_end_layers`: The number (or fraction) of end layers to skip (default: 1).
-- `--discriminant_ratio_tolerance`: Tolerance used to filter low signal / "noise" directions (0 = none) (default: 0.5).
+- `--discriminant_ratio_tolerance`: Tolerance used to filter/select the directions (default: 0.5).
 
 ### Running the Script
 
