@@ -221,10 +221,10 @@ This will partially apply all 3 of the (positive-axis) "writing style" control v
 The theoretical upper bound value for equal weights is between `1/n` and `sqrt(1/n)` depending on how correlated the `n` control vector directions are, eg:
 
 - For `n = 1` use the default scale-factor of `1.0` for comparison with the values below.
-- For `n = 2` is between `1/2 ≈ 0.5` and `sqrt(1/3) ≈ 0.707`.
+- For `n = 2` is between `1/2 ≈ 0.5` and `sqrt(1/2) ≈ 0.707`.
 - For `n = 3` is between `1/3 ≈ 0.333` and `sqrt(1/3) ≈ 0.577`.
-- For `n = 4` is between `1/4 ≈ 0.25` and `sqrt(1/3) ≈ 0.5`.
-- For `n = 5` is between `1/5 ≈ 0.2` and `sqrt(1/3) ≈ 0.447`.
+- For `n = 4` is between `1/4 ≈ 0.25` and `sqrt(1/4) ≈ 0.5`.
+- For `n = 5` is between `1/5 ≈ 0.2` and `sqrt(1/5) ≈ 0.447`.
 
 and so on.
 
