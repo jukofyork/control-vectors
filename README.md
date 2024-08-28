@@ -4,7 +4,7 @@
 
 The Control Vector Generator is a Python program designed to create control vectors for use with [llama.cpp](https://github.com/ggerganov/llama.cpp) via analysis of hidden state activations. Control vectors allow fine-tuned control over language model outputs, enabling more precise and targeted text generation.
 
-See [creative-writing-control-vectors-v4.0](https://huggingface.co/jukofyork/creative-writing-control-vectors-v4.0) to download the latest versions of the pre-generated control vectors in [GGUF](https://github.com/ggerganov/ggml/blob/master/docs/gguf.md) format.
+See [creative-writing-control-vectors-v3.0](https://huggingface.co/jukofyork/creative-writing-control-vectors-v3.0) to download the latest versions of the pre-generated control vectors in [GGUF](https://github.com/ggerganov/ggml/blob/master/docs/gguf.md) format.
 
 ## Table of Contents
 
