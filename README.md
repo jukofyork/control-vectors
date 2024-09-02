@@ -252,6 +252,16 @@ llama-cli --model <model>.gguf [other CLI arguments] \
 2. **Do not** mix both sides of a positive/negative axis at the same time (eg: `--control-vector language__simple.gguf` and `--control-vector language__ornate.gguf` will just cancel out and have no effect...).
 3. Ensure your `llama.cpp` version is up to date (multi-vector support added 27/06/24 in [#8137](https://github.com/ggerganov/llama.cpp/pull/8137)).
 
+## Llama.cpp Command Line Generator for Control Vectors
+
+Courtesy of [gghfez](https://huggingface.co/gghfez), this utility helps create command line options:
+
+<p align="center">
+  <img src="http://github.com/jukofyork/control-vectors/command_line_generator.png" alt="Command Line Generator Tool" />
+</p>
+
+Use this tool on [GitHub Pages](https://jukofyork.github.io/control-vectors/command_line_generator.html) to easily generate command line options for use with [llama.cpp](https://github.com/ggerganov/llama.cpp).
+
 ---
 
 ## Algorithm Details
