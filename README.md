@@ -257,7 +257,7 @@ llama-cli --model <model>.gguf [other CLI arguments] \
 Courtesy of [gghfez](https://huggingface.co/gghfez), this utility helps create command line options:
 
 <p align="center">
-  <img src="http://github.com/jukofyork/control-vectors/command_line_generator.png" alt="Command Line Generator Tool" />
+  <img src="https://github.com/jukofyork/control-vectors/blob/main/command_line_generator.png" alt="Command Line Generator Tool" />
 </p>
 
 Use this tool on [GitHub Pages](https://jukofyork.github.io/control-vectors/command_line_generator.html) to easily generate command line options for use with [llama.cpp](https://github.com/ggerganov/llama.cpp).
