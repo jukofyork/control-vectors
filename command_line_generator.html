@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llama.cpp Control Vector Command Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4">Llama.cpp Control Vector Command Generator</h1>
+        
+        <div class="mb-4">
+            <label for="controlVectorPath" class="block mb-2">Control Vector Path:</label>
+            <input type="text" id="controlVectorPath" class="w-full p-2 border rounded" placeholder="/path/to/control/vectors">
+        </div>
+
+        <div class="mb-4">
+            <label for="modelVectorName" class="block mb-2">Model Vector Name:</label>
+            <input type="text" id="modelVectorName" class="w-full p-2 border rounded" placeholder="e.g., wizard-lm-2:8x22b">
+        </div>
+
+        <div id="sliders" class="space-y-4"></div>
+
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">Generated Command:</h2>
+            <pre id="output" class="bg-gray-200 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
+        </div>
+    </div>
+
+    <script>
+        const controlVectors = [
+            { name: "character_focus", options: ["dialogue", "narration"] },
+            { name: "compassion_vs_sadism", options: ["compassion", "sadism"] },
+            { name: "empathy_vs_sociopathy", options: ["empathy", "sociopathy"] },
+            { name: "honesty_vs_machiavellianism", options: ["honesty", "machiavellianism"] },
+            { name: "humility_vs_narcissism", options: ["humility", "narcissism"] },
+            { name: "language", options: ["ornate", "simple"] },
+            { name: "optimism_vs_nihilism", options: ["optimism", "nihilism"] },
+            { name: "storytelling", options: ["descriptive", "explicit"] }
+        ];
+
+        const slidersContainer = document.getElementById('sliders');
+        const outputElement = document.getElementById('output');
+        const controlVectorPathInput = document.getElementById('controlVectorPath');
+        const modelVectorNameInput = document.getElementById('modelVectorName');
+
+        controlVectors.forEach(vector => {
+            const sliderContainer = document.createElement('div');
+            sliderContainer.innerHTML = `
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="${vector.name}-active" class="mr-2" onchange="updateOutput()">
+                    <label class="mr-4">${vector.name.replace(/_/g, ' ')}</label>
+                    <span id="${vector.name}-value" class="ml-auto">0</span>
+                    <button id="${vector.name}-reset" class="ml-2 px-2 py-1 bg-gray-200 rounded" onclick="resetSlider('${vector.name}')">Reset</button>
+                </div>
+                <input type="range" min="-100" max="100" value="0" class="w-full" 
+                    id="${vector.name}" oninput="updateSliderValue('${vector.name}')">
+            `;
+            slidersContainer.appendChild(sliderContainer);
+        });
+
+        function updateSliderValue(vectorName) {
+            const slider = document.getElementById(vectorName);
+            const value = parseFloat(slider.value) / 100;
+            document.getElementById(`${vectorName}-value`).textContent = value.toFixed(2);
+            updateOutput();
+        }
+
+        function resetSlider(vectorName) {
+            const slider = document.getElementById(vectorName);
+            slider.value = 0;
+            document.getElementById(`${vectorName}-value`).textContent = '0';
+            updateOutput();
+        }
+
+        function updateOutput() {
+            const controlVectorPath = controlVectorPathInput.value.trim();
+            const modelVectorName = modelVectorNameInput.value.trim();
+            let command = '';
+
+            controlVectors.forEach(vector => {
+                const isActive = document.getElementById(`${vector.name}-active`).checked;
+                if (!isActive) return;
+
+                const slider = document.getElementById(vector.name);
+                const value = parseFloat(slider.value) / 100;
+
+                command += `--control-vector ${controlVectorPath}/${modelVectorName}-${vector.name}__debias.gguf \\\n`;
+
+                if (value !== 0) {
+                    const option = value > 0 ? vector.options[0] : vector.options[1];
+                    const absValue = Math.abs(value);
+                    command += `--control-vector-scaled ${controlVectorPath}/${modelVectorName}-${vector.name}__${option}.gguf ${absValue.toFixed(2)} \\\n`;
+                }
+            });
+
+            outputElement.textContent = command ? command.trim() : 'No control vectors selected';
+        }
+
+        controlVectorPathInput.addEventListener('input', updateOutput);
+        modelVectorNameInput.addEventListener('input', updateOutput);
+
+        updateOutput();
+    </script>
+</body>
+</html>
