@@ -15,6 +15,7 @@ See [here](https://huggingface.co/jukofyork/creative-writing-control-vectors-v3.
 - [Usage](#usage)
 - [Examples](#examples)
 - [Applying Control Vectors](#applying-control-vectors)
+- [Command Line Generator](#command-line-generator)
 - [Algorithm Details](#algorithm-details)
 - [Troubleshooting](#troubleshooting)
 - [Credits](#credits)
@@ -246,21 +247,21 @@ llama-cli --model <model>.gguf [other CLI arguments] \
 
 **NOTE**: It is possible to use scale-factors greater than `1.0`, but if too large it will eventually damage the model's output.
 
-## Important Notes
+### Important Notes
 
 1. **Always** include the relevant "de-bias" control vector as well as the positive-axis/negative-axis control vector - they cannot be used on their own!
 2. **Do not** mix both sides of a positive/negative axis at the same time (eg: `--control-vector language__simple.gguf` and `--control-vector language__ornate.gguf` will just cancel out and have no effect...).
 3. Ensure your `llama.cpp` version is up to date (multi-vector support added 27/06/24 in [#8137](https://github.com/ggerganov/llama.cpp/pull/8137)).
 
-## Llama.cpp Command Line Generator for Control Vectors
+## Command Line Generator
 
-Courtesy of [gghfez](https://huggingface.co/gghfez), this utility helps create command line options:
+Courtesy of [gghfez](https://huggingface.co/gghfez), a utility to easily generate command line options for [llama.cpp](https://github.com/ggerganov/llama.cpp):
 
 <p align="center">
   <img src="https://github.com/jukofyork/control-vectors/blob/main/command_line_generator.png" alt="Command Line Generator Tool" />
 </p>
 
-Use this tool on [GitHub Pages](https://jukofyork.github.io/control-vectors/command_line_generator.html) to easily generate command line options for use with [llama.cpp](https://github.com/ggerganov/llama.cpp).
+You can run this tool directly on [GitHub Pages](https://jukofyork.github.io/control-vectors/command_line_generator.html).
 
 ---
 
